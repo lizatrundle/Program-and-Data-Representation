@@ -1,0 +1,152 @@
+// prelab 4
+// Liza Trundle
+//February 9, 2022
+// prelab4.cpp
+ 
+
+
+#include <iostream>
+#include <string>
+#include <climits>
+
+using namespace std;
+
+
+void sizeOfTest();
+void overflow();
+void outputBinary(unsigned int x);
+
+
+int main(){
+
+ 
+  unsigned int x;
+  cin >> x;
+
+  sizeOfTest();
+  overflow();
+  outputBinary(x);
+
+  return 0;
+
+}
+
+
+
+
+
+
+void sizeOfTest(){
+  //less of a function and more of a language construct 
+//returns size in bytes of a given variable or data type 
+//int, unsigned int, float, double, char, bool, int*, char*, and double*
+
+  
+
+  cout << "Size of int:" << sizeof(int) << endl;
+  cout << "Size of unsigned int:" << sizeof(unsigned int) << endl;
+  cout << "Size of float:" << sizeof(float) << endl;
+  cout << "Size of double:" << sizeof(double)<< endl;
+   cout << "Size of char:" << sizeof(char) << endl;
+  cout << "Size of bool:" << sizeof(bool) << endl;
+   cout << "Size of int*:" << sizeof(int*) << endl;
+   cout << "Size of char*:" << sizeof(char*) << endl;
+   cout << "Size of double*:" << sizeof(double*) << endl;
+   
+}
+void overflow(){
+// what happens when you add 1 to an unsigned int variable containing the max value of an unsigned int
+// create unsigned int, give it max value, and add one to that
+
+  unsigned int max_num= UINT_MAX;
+  //4294967295
+  //  2863311530
+  
+
+
+  cout << max_num << " + 1 =  " << max_num+1 << endl;
+ 
+    
+}
+
+
+void outputBinary(unsigned int x ){
+    
+    unsigned int remainder;
+    string binarynumber = "";
+    
+    //little endian
+    for (int i =0; i<32; i++){
+      //cout<<x<<" ";
+      remainder = x % 2;
+      // << multiplies by 2
+      //>> divides by 2 
+      
+	binarynumber += to_string(remainder);
+	// https://www.javatpoint.com/cpp-int-to-string : got the to_string conversion keyword
+
+	 if (i==3 || i ==7 || i ==11 ||i ==15|| i ==19||i== 23 || i==27){
+	   
+	binarynumber += " ";
+	
+      }
+      
+      // or convert it to integer 
+      x /= 2;
+     
+      //cout << remainder;
+    }
+    
+    
+    // big endian 
+    for (int j = 38; j>=0; j--){
+      cout << binarynumber[j];
+    }
+
+    
+    cout<< endl;
+    
+}
+      
+      // or x = x/2;
+      
+      
+      
+
+    
+
+
+
+
+    
+    //do converson in little endian
+    // output in big endian 
+    
+  // takes in one parameter, unsigned int: 0 and positive, no negative numbers
+  // take in and print out the 32 bit binary representation (including leading 0s) of the passed parameters in big endian format
+    // example execution :::  outputBinary(5) //=> 0000 0000 0000 0000 0000 0000 0000 0101
+
+    // formula for any base conversion to binary
+    // take number divided by base, put number in leftmost spot
+    /*carry the remainder 5/2,
+      2 remainder 1
+      2/2
+      1 remainder 0
+      1/2
+      0 remainder 1
+      add up the remainders to get the binary representations
+      little endian --- go left to right
+      only 32
+      print it in little endian
+      max number of digits is 32
+      do 2 for loops
+	   print little endian
+	   then print big endian */
+      
+
+ 
+
+
+
+
+  
