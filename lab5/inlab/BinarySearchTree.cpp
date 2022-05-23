@@ -1,0 +1,253 @@
+// Liza trundle
+// inlab 5
+// BinarySearchTree.cpp
+//February 27, 2022
+
+#include "BinaryNode.h"
+#include "BinarySearchTree.h"
+#include <iostream>
+#include <string>
+using namespace std;
+
+
+// whoile left is not null, go down the left
+
+BinarySearchTree::BinarySearchTree() {
+    root = NULL;
+}
+
+BinarySearchTree::~BinarySearchTree() {
+    delete root;
+    root = NULL;
+}
+
+//private one, dont use the root isntead use the parameter 
+void BinarySearchTree:: insert(const string& x, BinaryNode*& node){
+  if (node==NULL)
+    {
+      node = new BinaryNode();
+      node->value = x;
+      return;
+    }
+  else if (node->value > x){
+    insert(x, node->left);}
+  
+  else if (node->value < x){
+    insert(x, node->right);
+  }
+  
+  else;
+}
+
+  
+// insert finds a position for x in the tree and places it there.
+//public insert method 
+void BinarySearchTree::insert(const string& x) {
+    insert(x, root);
+}
+
+// remove finds x's position in the tree and removes it.
+void BinarySearchTree::remove(const string& x) {
+  root = remove(root, x);
+  // this root has number 3, so remove the number from that node, so the node now equals the node without the value in it 
+}
+
+// private helper for remove to allow recursion over different nodes. returns
+// a BinaryNode* that is assigned to the original node.
+BinaryNode* BinarySearchTree::remove(BinaryNode*& n, const string& x) {
+ 
+    if (n == NULL) {
+        return NULL;
+    }
+
+    // first look for x
+    if (x == n->value) {
+        // found
+        if (n->left == NULL && n->right == NULL) {
+            // no children
+            // just delete it :)
+            delete n;
+            n = NULL;
+            return NULL;
+        } else if (n->left == NULL) {
+            // single child (right)
+            // remove current node and return right child node for parent
+            BinaryNode* temp = n->right;
+            n->right = NULL;
+            delete n;
+            n = NULL;
+            return temp;
+        } else if (n->right == NULL) {
+            // single child (left)
+            // remove current node and return left child node for parent
+            BinaryNode* temp = n->left;
+            n->left = NULL;
+            delete n;
+            n = NULL;
+            return temp;
+        } else {
+            // two children
+            // replace current node with right child node's minimum, then remove that node
+            string value = min(n->right);
+            n->value = value;
+            n->right = remove(n->right, value);
+        }
+    } else if (x < n->value) {
+        n->left = remove(n->left, x);
+    } else {
+        n->right = remove(n->right, x);
+    }
+    
+    return n;
+}
+
+//public pathto method, only takes in a string valye 
+string BinarySearchTree::pathTo(const string&x) const{
+
+  if (!find(x)){
+    return "";
+    
+	}
+
+    return pathTo(root, x);
+}
+// pathTo finds x in the tree and returns a string representing the path it
+// took to get there.
+string BinarySearchTree::pathTo(BinaryNode* node, const string& x) const {
+
+  if (node ->value ==x){
+    return x;
+  }
+  
+  else if (node->value > x){
+    return node->value + " " +  pathTo(node->left, x);
+  }
+  else if (node->value < x){
+    return  node->value + " " +  pathTo(node->right, x);
+
+  }
+  else return "";
+}
+  
+
+// find determines whether or not x exists in the tree.
+//private function with two parameters 
+bool BinarySearchTree::find(const string& x, BinaryNode* node) const {
+  //keep as pointer instead of dereferencing it to value, cant access value left and right 
+
+  if (node==NULL){
+    return false;
+  }
+
+  else if  (node->value == x){
+    return true;}
+  
+  else if (node->value >x){
+    return find(x, node-> left);
+  }
+
+  else return find (x, node->right);
+  
+}
+  
+
+
+//public one 
+bool BinarySearchTree::find(const string& x) const {
+  return find(x, root);
+}
+
+
+// priavte helper 
+ int BinarySearchTree::numNodes(BinaryNode* tree) const{
+  
+   if (tree==NULL){
+    return 0;}
+   
+   else if (tree->left != NULL && tree->right != NULL){
+     
+    return 1 + numNodes(tree->left) + numNodes(tree-> right);
+   }
+   
+   else if (tree->left == NULL){
+     
+     return  1 + numNodes(tree->right);
+   }
+   else if (tree->right == NULL){
+     
+     return  1 + numNodes(tree->left);
+   }
+
+   return 1;
+   
+ }
+ 
+//public
+// numNodes returns the total number of nodes in the tree.
+int BinarySearchTree::numNodes() const {
+  // BinaryNode* newnode = root;n
+  
+  // int answer = numNodes(newnode);
+  
+  //return answer;
+
+  if (root==NULL){
+    return 0;}
+  
+
+  return numNodes(root); 
+
+}
+ 
+
+// min finds the string with the smallest value in a subtree.
+string BinarySearchTree::min(BinaryNode* node) const {
+    // go to bottom-left node
+    if (node->left == NULL) {
+        return node->value;
+    }
+    return min(node->left);
+}
+
+// Helper function to print branches of the binary tree
+// You do not need to know how this function works.
+void showTrunks(Trunk* p) {
+    if (p == NULL) return;
+    showTrunks(p->prev);
+    cout << p->str;
+}
+
+void BinarySearchTree::printTree() {
+    printTree(root, NULL, false);
+}
+
+// Recursive function to print binary tree
+// It uses inorder traversal
+void BinarySearchTree::printTree(BinaryNode* root, Trunk* prev, bool isRight) {
+    if (root == NULL) return;
+
+    string prev_str = "    ";
+    Trunk* trunk = new Trunk(prev, prev_str);
+
+    printTree(root->right, trunk, true);
+
+    if (!prev)
+        trunk->str = "---";
+    else if (isRight) {
+        trunk->str = ".---";
+        prev_str = "   |";
+    } else {
+        trunk->str = "`---";
+        prev->str = prev_str;
+    }
+
+    showTrunks(trunk);
+    cout << root->value << endl;
+
+    if (prev) prev->str = prev_str;
+    trunk->str = "   |";
+
+    printTree(root->left, trunk, false);
+
+    delete trunk;
+}

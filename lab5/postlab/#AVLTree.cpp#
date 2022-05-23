@@ -1,0 +1,343 @@
+//Liza Trundle  emt8kdn
+//Postlab 5
+// March 1, 2022
+//AVLTree.cpp
+
+#include "AVLNode.h"
+#include "AVLTree.h"
+#include <iostream>
+#include <string>
+using namespace std;
+
+
+// AVL tree: keep the tree balanced after every insert...
+//essentially the same as a BST just includes balance factors 
+AVLTree::AVLTree() {
+    root = NULL;
+}
+
+AVLTree::~AVLTree() {
+    delete root;
+    root = NULL;
+}
+
+// created function to get the balance factor of the tree to y
+int AVLTree::getBalanceFactor(AVLNode* node){
+  if (node==NULL){
+    return 0;
+  }
+  int factor = height(node->right) - height(node->left);
+  return factor; 
+}
+
+// insert finds a position for x in the tree and places it there, rebalancing
+// as necessary.
+//public insert method 
+void AVLTree::insert(const string& x) {
+     insert(root, x);
+}
+
+// private insert method 
+void AVLTree::insert(AVLNode*& node, const string& x) {
+
+  if (node== NULL){
+    node = new AVLNode();
+    node->value = x;
+    
+  }
+   else if (node->value > x){
+     insert(node->left, x);
+      balance(node);
+   }
+  
+   else if (node->value <x ){
+    insert (node->right, x);
+     balance(node);
+  }
+
+   else if (node->value == x){
+     return;
+   }
+  
+  // balance(node);
+   node-> height = 1 + max(height(node->left), height(node->right));
+}
+
+// pathTo finds x in the tree and returns a string representing the path it
+// took to get there.
+// public path to method 
+string AVLTree::pathTo(const string& x) const {
+  // if the value isnt in the tree, return empty string
+if (!find(x)){
+    return "";
+    }
+ 
+ return pathTo(x, root);
+}
+
+//private pathto method 
+string AVLTree::pathTo(const string&x, AVLNode* node)const{
+    if (node->value == x){
+    return x;
+  }
+  else if (node->value > x){
+    return node->value + " " + pathTo(x, node->left);
+  }
+  else if (node->value < x){
+    return  node->value + " " +  pathTo(x, node->right );
+  }
+  else return "";
+}
+
+// find determines whether or not x exists in the tree.
+// public path to method 
+bool AVLTree::find(const string& x) const {
+     return find(x, root);
+}
+
+
+//private find method:: same as method from find inlab
+bool AVLTree::find(const string& x, AVLNode* node) const {
+    if (node==NULL){
+    return false;
+  }
+  else if  (node->value == x){
+    return true;}
+  
+  else if (node->value >x){
+    return find(x, node-> left);
+  }
+    
+  else return find (x, node->right);
+    
+}
+
+// numNodes returns the total number of nodes in the tree.
+//public numNodes method 
+int AVLTree::numNodes() const {
+    if (root==NULL){
+    return 0;
+    }
+  return numNodes(root);
+}
+
+
+//private num nodes 
+int AVLTree:: numNodes(AVLNode* node) const {
+    if (node==NULL){
+    return 0;}
+   
+   else if (node->left != NULL && node->right != NULL){
+     
+    return 1 + numNodes(node->left) + numNodes(node-> right);
+   }
+   
+   else if (node->left == NULL){
+     
+     return  1 + numNodes(node->right);
+   }
+   else if (node->right == NULL){
+     
+     return  1 + numNodes(node->left);
+   }
+
+   else return 1;
+ }
+ 
+
+// balance makes sure that the subtree with root n maintains the AVL tree
+// property, namely that the balance factor of n is either -1, 0, or 1.
+void AVLTree::balance(AVLNode*& n) {
+
+int balance_node = getBalanceFactor(n);
+int balance_left = getBalanceFactor (n->left);
+int balance_right = getBalanceFactor (n->right);
+
+
+ if (n!=NULL){
+   
+if (balance_node ==2){
+    if (balance_right ==-1){
+        n->right = rotateRight(n->right);
+    }
+    n = rotateLeft(n);
+}
+
+ else if (balance_node ==-2){
+    if (balance_left==1){
+        n->left = rotateLeft(n->left);
+    }
+    n = rotateRight(n);
+ }}
+
+ else;
+}
+
+
+// the order:
+     // b becomes the new root, a takes ownership of bs left child as its right child, or null
+    // b takes ownership of a as its left child 
+AVLNode* AVLTree::rotateLeft(AVLNode*& n) {
+  // if (n!= NULL){
+    AVLNode* child = n->right;
+    n->right = child->left;
+    
+    child->left = n;
+
+    //update heights 
+    n->height = 1 + max(height(n->left), height(n->right));
+   child->height = 1 + max(height(n->left), height(n->right));
+
+   return child;
+   
+    //  return n;
+}
+ 
+  
+  
+
+// rotateRight performs a single rotation on node n with its left child.
+AVLNode* AVLTree::rotateRight(AVLNode*& n) {
+
+  // if (n!= NULL){
+    AVLNode* child = n->left;
+   
+    n->left = child->right;
+  
+    child->right = n;
+
+    //update heights 
+    n->height = 1 + max(height(n->left), height(n->right));
+    child->height = 1 + max(height(child->left), height(child->right));
+
+    return child; 
+    // return n;
+    //return child;
+    // n = child;}
+}
+   
+ 
+
+// remove finds x's position in the tree and removes it, rebalancing as
+// necessary.
+//public remove method 
+void AVLTree::remove(const string& x) {
+    root = remove(root, x);
+}
+
+// private helper for remove to allow recursion over different nodes.
+// Returns an AVLNode* that is assigned to the original node.
+AVLNode* AVLTree::remove(AVLNode*& n, const string& x) {
+    if (n == NULL) {
+        return NULL;
+    }
+
+    // first look for x
+    if (x == n->value) {
+        // found
+        if (n->left == NULL && n->right == NULL) {
+            // no children
+            delete n;
+            n = NULL;
+            return NULL;
+        } else if (n->left == NULL) {
+            // Single child (left)
+            AVLNode* temp = n->right;
+            n->right = NULL;
+            delete n;
+            n = NULL;
+            return temp;
+        } else if (n->right == NULL) {
+            // Single child (right)
+            AVLNode* temp = n->left;
+            n->left = NULL;
+            delete n;
+            n = NULL;
+            return temp;
+        } else {
+            // two children -- tree may become unbalanced after deleting n
+            string sr = min(n->right);
+            n->value = sr;
+            n->right = remove(n->right, sr);
+        }
+    } else if (x < n->value) {
+        n->left = remove(n->left, x);
+    } else {
+        n->right = remove(n->right, x);
+    }
+balance(n);
+    // Recalculate heights and balance this subtree
+    n->height = 1 + max(height(n->left), height(n->right));
+   
+
+    return n;
+}
+
+// min finds the string with the smallest value in a subtree.
+string AVLTree::min(AVLNode* node) const {
+    // go to bottom-left node
+    if (node->left == NULL) {
+        return node->value;
+    }
+    return min(node->left);
+}
+
+// height returns the value of the height field in a node.
+// If the node is null, it returns -1.
+int AVLTree::height(AVLNode* node) const {
+    if (node == NULL) {
+        return -1;
+    }
+    return node->height;
+}
+
+// max returns the greater of two integers.
+int max(int a, int b) {
+    if (a > b) {
+        return a;
+    }
+    return b;
+}
+
+// Helper function to print branches of the binary tree
+// You do not need to know how this function works.
+void showTrunks(Trunk* p) {
+    if (p == NULL) return;
+    showTrunks(p->prev);
+    cout << p->str;
+}
+
+// Recursive function to print binary tree
+// It uses inorder traversal
+void AVLTree::printTree(AVLNode* root, Trunk* prev, bool isRight) {
+    if (root == NULL) return;
+
+    string prev_str = "    ";
+    Trunk* trunk = new Trunk(prev, prev_str);
+
+    printTree(root->right, trunk, true);
+
+    if (!prev)
+        trunk->str = "---";
+    else if (isRight) {
+        trunk->str = ".---";
+        prev_str = "   |";
+    } else {
+        trunk->str = "`---";
+        prev->str = prev_str;
+    }
+
+    showTrunks(trunk);
+    cout << root->value << endl;
+
+    if (prev) prev->str = prev_str;
+    trunk->str = "   |";
+
+    printTree(root->left, trunk, false);
+
+    delete trunk;
+}
+
+void AVLTree::printTree() {
+    printTree(root, NULL, false);
+}
