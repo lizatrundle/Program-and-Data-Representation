@@ -1,0 +1,100 @@
+\hypertarget{class_middle_earth}{}\doxysection{Middle\+Earth Class Reference}
+\label{class_middle_earth}\index{MiddleEarth@{MiddleEarth}}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{class_middle_earth_ad8fe036789b54f21f826fa0abdc06580}{Middle\+Earth}} (int xsize, int ysize, int num\+\_\+cities, int seed)
+\begin{DoxyCompactList}\small\item\em A constructor to create \mbox{\hyperlink{class_middle_earth}{Middle\+Earth}}. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_middle_earth_a5cb0956acbe5e39525e5061c9f3cc79b}{print}} ()
+\item 
+void \mbox{\hyperlink{class_middle_earth_ae724794944d0ade7854047e779eb7054}{print\+Table}} ()
+\item 
+float \mbox{\hyperlink{class_middle_earth_a23b3c1bc67569c0ad00aef88ed4ce863}{get\+Distance}} (const string \&city1, const string \&city2)
+\begin{DoxyCompactList}\small\item\em method to return distance \end{DoxyCompactList}\item 
+vector$<$ string $>$ \mbox{\hyperlink{class_middle_earth_ad730d037c3946ec1129657fc5e0cb353}{get\+Itinerary}} (unsigned int length)
+\begin{DoxyCompactList}\small\item\em method to get itinerary; returns vector of strings \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{class_middle_earth_ad8fe036789b54f21f826fa0abdc06580}\label{class_middle_earth_ad8fe036789b54f21f826fa0abdc06580}} 
+\index{MiddleEarth@{MiddleEarth}!MiddleEarth@{MiddleEarth}}
+\index{MiddleEarth@{MiddleEarth}!MiddleEarth@{MiddleEarth}}
+\doxysubsubsection{\texorpdfstring{MiddleEarth()}{MiddleEarth()}}
+{\footnotesize\ttfamily Middle\+Earth\+::\+Middle\+Earth (\begin{DoxyParamCaption}\item[{int}]{xsize,  }\item[{int}]{ysize,  }\item[{int}]{num\+\_\+cities,  }\item[{int}]{seed }\end{DoxyParamCaption})}
+
+
+
+A constructor to create \mbox{\hyperlink{class_middle_earth}{Middle\+Earth}}. 
+
+constuctor for Middleearth
+
+
+\begin{DoxyParams}{Parameters}
+{\em xsize} & middleearth size from x \\
+\hline
+{\em ysize} & middleearth size from y \\
+\hline
+{\em num\+\_\+cities} & the number of cities in middleearth \\
+\hline
+{\em seed} & random seed\\
+\hline
+\end{DoxyParams}
+Iluvatar, the creator of Middle-\/\+Earth compute random city positions
+
+compute the 2-\/d distance array we assume that num\+\_\+cities \texorpdfstring{$<$}{<} xsize $\ast$ ysize
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{class_middle_earth_a23b3c1bc67569c0ad00aef88ed4ce863}\label{class_middle_earth_a23b3c1bc67569c0ad00aef88ed4ce863}} 
+\index{MiddleEarth@{MiddleEarth}!getDistance@{getDistance}}
+\index{getDistance@{getDistance}!MiddleEarth@{MiddleEarth}}
+\doxysubsubsection{\texorpdfstring{getDistance()}{getDistance()}}
+{\footnotesize\ttfamily float Middle\+Earth\+::get\+Distance (\begin{DoxyParamCaption}\item[{const string \&}]{city1,  }\item[{const string \&}]{city2 }\end{DoxyParamCaption})}
+
+
+
+method to return distance 
+
+
+\begin{DoxyParams}{Parameters}
+{\em city1} & city1 name \\
+\hline
+{\em city2} & city2 name\\
+\hline
+\end{DoxyParams}
+This method returns the distance between the two passed cities. If we assume that the hash table (i.\+e. the map) is O(1), then this method call is also O(1) \mbox{\Hypertarget{class_middle_earth_ad730d037c3946ec1129657fc5e0cb353}\label{class_middle_earth_ad730d037c3946ec1129657fc5e0cb353}} 
+\index{MiddleEarth@{MiddleEarth}!getItinerary@{getItinerary}}
+\index{getItinerary@{getItinerary}!MiddleEarth@{MiddleEarth}}
+\doxysubsubsection{\texorpdfstring{getItinerary()}{getItinerary()}}
+{\footnotesize\ttfamily vector$<$ string $>$ Middle\+Earth\+::get\+Itinerary (\begin{DoxyParamCaption}\item[{unsigned int}]{length }\end{DoxyParamCaption})}
+
+
+
+method to get itinerary; returns vector of strings 
+
+
+\begin{DoxyParams}{Parameters}
+{\em length} & length of roadmap\\
+\hline
+\end{DoxyParams}
+Returns the list of cities to travel to. The first city is the original start point as well as the end point. The number of cities passed in does not include this start/end point (so there will be length+1 entries in the returned vector). \mbox{\Hypertarget{class_middle_earth_a5cb0956acbe5e39525e5061c9f3cc79b}\label{class_middle_earth_a5cb0956acbe5e39525e5061c9f3cc79b}} 
+\index{MiddleEarth@{MiddleEarth}!print@{print}}
+\index{print@{print}!MiddleEarth@{MiddleEarth}}
+\doxysubsubsection{\texorpdfstring{print()}{print()}}
+{\footnotesize\ttfamily void Middle\+Earth\+::print (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+print method to print out middle earth
+
+The Mouth of Sauron! (prints out info on the created \textquotesingle{}world\textquotesingle{}) \mbox{\Hypertarget{class_middle_earth_ae724794944d0ade7854047e779eb7054}\label{class_middle_earth_ae724794944d0ade7854047e779eb7054}} 
+\index{MiddleEarth@{MiddleEarth}!printTable@{printTable}}
+\index{printTable@{printTable}!MiddleEarth@{MiddleEarth}}
+\doxysubsubsection{\texorpdfstring{printTable()}{printTable()}}
+{\footnotesize\ttfamily void Middle\+Earth\+::print\+Table (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+print distances
+
+prints a tab-\/separated table of the distances (this can be loaded into Excel or similar) 
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+middleearth.\+h\item 
+middleearth.\+cpp\end{DoxyCompactItemize}
