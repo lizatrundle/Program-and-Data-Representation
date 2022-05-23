@@ -1,0 +1,74 @@
+
+C00B    000                      jump        start         Skip around the inputs first 
+0000    001           i           dw            0             inti =0 index variable , incrementing each time
+0000    002           n           dw           0            int size, num elements in array 
+0048    003           arr         dw           0            Int arr[], address of where array starts 
+0000    004           zero        dw           0             constant 0
+0001    005           one         dw           1             constant 1
+4000    006         store space     dw         4000           temporary variable to store the current input to make things easier when inserting into array 
+3000    007         load space     Dw         3000            load space for second loop 
+3000    008         load space      dw        3000           load space for third loop 
+3004    009                       load        zero        load zero (the value int 0 )into the accumulator 
+4001    00A                       store        I           store the value of zero in I ( actually initialize the value of i  to zero ) 
+1000    00B          start        read                    read in the number of elements in the array 
+4002    00C                       store        n          store the user input num elements in variable n 
+3002    00D    start loop1        load          n          load in number of elements to the accumulator, loop1= initializing array loop
+6001    00E                       subtract      i           if (I>= n) then exit the loop, loop to read in the elements the user inputted 
+E01F    00F                       jmpl       exit loop      if n-i is less then zero then exit out 
+B000    010
+B000    011
+D01F    012                       jmpe        exit loop     if n-1 is equal to zero then exit out 
+B000    013                       
+B000    014                      
+3006    015                       load           store space              load in the store_it aka empty load command into the accumulator 
+5003    016                       add            a              adding the array to index into the empty load space 
+5001    017                       add            i              adding in the index position of the array to store the number user inputs
+401A    018                       store                          storing a[i] in space
+1000    019                       read          arr[0]       read in the first element of the array
+0000    01A          storeit        dw            0               storing a[i] 
+3001    01B                        load          i              i+=1 going through index and storing the numbers in the array 
+5005    01C                         add          1              incrementing i by one
+4001    01D                        store         I              storing i 
+C00D    01E                         jmp          reloop      jump back to loop, keep reading input/ storing in array until through all elements in the array
+3004    01F                       load              zero     (the value int 0 )into the accumulator 
+4001    020                       store              I          store the value of zero in I 
+3002    021    start loop2         load          n          loop2 = print forward loop, load in number of elements 
+B000    022                       
+B000    023                     
+B000    024                       
+6001    025                      subtract      i           if (I>= n) then exit the loop, loop to read in the elements the user inputted 
+E035    026                       jmpl       exit loop      if n-i is less then zero then exit out onto loop 3 
+D035    027                       jmpe        exit loop     if n-1 is equal to zero then exit out 
+3007    028                       load            load space     load in the load space  aka empty load command into the accumulator 
+5003    029                       add            a              adding the array to index into the empty load space 
+B000    02A
+5001    02B                       add            i              adding in the index position of the array to store the number user inputs
+402E    02C                       store                          storing a[i] in the load space
+B000    02D                                
+0000    02E          load space        dw            0               storing a[I] in the load space of accumulator 
+1800    02F                         Print a[0] 
+3001    030                        load          i              i+=1 going through index and storing the numbers in the array 
+5005    031                         add          1              incrementing i by one
+4001    032                        store         I              storing i 
+C021    033                         jmp          reloop      jump back to loop, keep reading input/ storing in array until through all elements in the array
+B000    034                      
+3002    035    start loop3         load          n          loop2 = print forward loop, load in number of elements 
+6005    036                        subtract      1           subtract 1 from n to make sure the index is not out of bounds
+4001    037                        store                     store new value of n-1 in I 
+B000    038                       
+E047    039    jump here          jmpl       exit loop      if n-i is less then zero then exit out onto loop 3 
+B000    03A                       
+3008    03B                        load                      load in load space 
+5003    03C                       add            a              adding the array to index into the empty load space 
+B000    03D
+5001    03E                       add            i              adding in the index position of the array to store the number user inputs
+4041    03F                       store                          storing a[i] in the load space
+B000    040                                
+0000    041          load space        dw            0               storing a[I] in the load space of accumulator 
+1800    042                         Print a[i] 
+3001    043                        load          i              i+=1 going through index and storing the numbers in the array 
+6005    044                         sub          1              incrementing i by one
+4001    045                        store         I              storing i 
+C039    046                         jmp          reloop      jump back to loop, keep reading input/ storing in array until through all elements in the array
+0000    047                         halt 
+0000    048            array         

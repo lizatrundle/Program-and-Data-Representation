@@ -1,0 +1,24 @@
+C009 000 jump    start     skip around inputs 
+3000 001    store space           space to store the current instruction
+0017 002 size    dw        length of the program (every line)
+0000 003  i      dw        0     iterator to keep track of current instruction position, so it doesn't halt at 
+0000 004    zero    dw       0    constant zero to use for whatever 
+B000 005
+0001 006 one     dw        1     constant one to use for incrementing instruction
+3004 007 load zero
+4003 008 store the value of zero in I
+3002 009 start loop       load the size of the program (what you are printing out) 
+6003 00A subtract I       if (I>= n) then exit the loop, loop to print out each line/ each instruction of the program 
+E017 00B jmpl              exit the loop, if n-i is less than zero then exit out 
+D017 00C jmpe              exit the loop, if n-i is equal to zero then exit out  
+3001 00D load              load the store space 
+5003 00E add                add in i
+B000 00F
+4011 010 store              store a[i] in space 
+0000 011 storeit     dw     0  storing a[I]
+1800 012 print              print out a[I] or the intruction
+3002 013 load i
+5006 014  add 1 
+4002 015  store i
+C009 016  jump back to start of the loop , jump back to actual start 
+0000 017 halt program 

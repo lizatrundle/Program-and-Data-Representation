@@ -1,0 +1,128 @@
+C01D	000	jmp	 		jump to initialize index j as last index 
+B000	001	nop			empty space for mistake
+0000	002	zero	dw		0    
+0001	003	one	dw		1
+B000	004	nop
+000A	005	size	dw		10	the size of ten to be length of array 
+0000	006	i	dw		0	first track of array index
+0000	007	j	dw		0	second track of index for swapping
+3000	008	loadspace		load space
+4000	009	storespace
+B000	00A
+007F	00B	arr[]	dw		0, storing array at the end of the program 
+0000	00C	k	dw		0, index of array for reading in inputs
+0000	00D	temp1			a[j].  -- load value at array[j] and store here 
+0000	00E	temp2			a[j-1] --  load value at array[j-1] and store here 
+0000	00F	m	dw		0, index of array for printing outputs 
+B000	010
+B000	011
+B000	012
+B000	013
+B000	014
+B000	015
+B000	016
+B000	017
+B000	018
+B000	019
+B000	01A
+B000	01B
+B000	01C
+3005	01D	load size=10		start loop 1: to read in user input, and fill array
+600C	01E	sub k 			loop until index is at 10, where 10-k would be zero 
+B000	01F	nop
+D02E	020	jmpe			exit loop; if n-k == 0 then exit input loop
+3009	021                       load           store space       load in the store_it aka empty load command 	
+500B	022                       add            a              adding the array to index into the empty load space 
+500C	023                       add            k              adding in the index position of the array 
+4026	024                       store                          storing a[K] in space
+1000	025                       read          arr[0]       read in the first element of the array
+0000	026         storeit        dw            0               storing a[K] 
+300C	027                       load          K      K+=1 going through index and storing the numbers in the
+5003	028                         add          1              incrementing K by one
+400C	029                       store         K              storing K
+C01D	02A                         jmp          reloop      jump back to loop, keep reading input/ storing in array
+B000	02B
+B000	02C
+B000	02D
+3005	02E	load size =10		start loop 2: outer loop using I as index
+6006`	02F	sub i			loop until index at 10
+D070	030	jmpe			exit loop; if n-i == 0 then exit outer loop
+B000	031	nop
+B000	032	nop
+B000	033	nop
+3005	034	load size =10		start loop 3: nested loop to go backwards with j 
+6003	035	sub	1
+4007	036	store	j		store 10-1 in j as the index of the last pos of array
+6006`	037	sub i			end loop once j-1==0.     //this is where you jump back so you dont load size every time 
+D069	038	jmpe			exit loop; if n-j == 0 then exit inner loop
+B000	039
+B000	03A
+B000	03B
+3008	03C	load			load in the load space 
+500B	03D	add a 
+5007	03E	add j			a[j]
+4040	03F	store			storing a[j] in the next line which is store space
+0000	040	store space		storing the load instruction . The accumulator is element at j 
+400D	041	store			storing the value at a[j] in variable temp1
+3008	042	load			load in the load space 
+500B	043	add a                                                                                  this is storing the variables in temp
+5007	044	add j			a[j]
+6003	045	sub 1			j-1
+4047	046	store			storing a[j-1] in the next line which is store space
+0000	047	store space		storing the load instruction . The accumulator is element at j 
+400E	048	store			storing the value at a[j-1] in variable temp2
+B000	049	
+B000	04A	
+B000	04B
+600D	04C	sub			accumulator (value CURRENTLY at j-1) - value at j   //changed from 4D
+D062	04D	jmpe			exit loop; if j-1-j == 0 inner if condition isnt met 
+E062	04E	jmpl			exit loop; if j-1-j <0 inner if condition isnt met (dont swap) 
+3009	04F	load           		store space // load in the store_it aka empty load command 	
+500B	050	add            		a  //adding the array to index into the empty load space                    this is   A[j] = A[j - 1];
+5007	051	add			j  // adding in the index position of the array 
+4054	052	store                          storing a[j] in space
+300E	053	load			loading in temp2 to replace a[j] with a [j-1]	
+0000	054	storeit        dw            0               storing a[j] , we want it to be a[j-1]  
+B000	055
+B000	056
+B000	057
+3009	058	load           store space              load in the store_it aka empty load command 	
+500B	059	add            a              adding the array to index into the empty load space 
+5007	05A	add            j              adding in the index position of the array 
+6003	05B	sub				subtract one from a[j] so at a[j-1]
+405E	05C     store                          storing a[j] in space                         this is A[j - 1] = temp;
+300D	05D	load			loading in temp1 to replace a[j-1] with a [j]	
+0000	05E	storeit        dw            0               storing a[j-1] , we want it to be a[j]
+B000	05F
+B000	060
+B000	061
+3007	062	load		load in j 
+6003	063	sub		subtract 1 from j, decrement j--
+4007	064	store 		store value in j 
+C037	065	jmp		jump back to top of the third loop(nested loop) 
+B000	066
+B000	067
+B000	068
+3006	069	load		load in i
+5003	06A	add		add 1 
+4006	06B	store 		store I++
+C02E	06C	jmp		jump back to top of the second loop(outer loop) 
+B000	06D
+B000	06E
+B000	06F	
+3005	070	load		start loop 4: printing loop, load in size of array
+600F	071	sub		subtract m which is index of array
+D07E	072	jmpe		exit loop; if size-m == 0 then exit print loop and go to halt 
+3008	073	load		load in load space 
+500B	074	add		adding the array to index into the empty load space 	
+500F	075	add		m, adding in the index of m so you are at a[m] 
+4078	076	store            storing a[m] in the load space
+B000	077
+0000	078	load space       a[m] stored here in the load space of accumulator 
+1800	079	Print 		a[m] 
+300F	07A	load          	m              
+5003	07B	add		1
+400F	07C	store		store m+1, incrementing m every time to loop through array to print 
+C070	07D	jmp		reload, jump back to top of the loop, keep reading input/storing array
+0000	07E	halt 
+0000	07F	arr[] 
