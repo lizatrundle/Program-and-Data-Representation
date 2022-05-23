@@ -1,0 +1,46 @@
+//Liza Trundle
+//postlab 3
+//newStack.h
+//feb 8, 2022
+
+
+
+#ifndef NEWSTACK_H
+#define NEWSTACK_H
+
+
+#include <iostream>
+#include <string>
+
+#include "List.h"
+#include "ListNode.h"
+#include "ListItr.h"
+
+using namespace std;
+
+class newStack{
+
+
+public:
+
+  
+List stacklist;
+ newStack();
+
+
+void push(int x);
+
+int top();
+
+void pop();
+
+bool empty();
+
+};
+
+#endif
+
+
+  
+
+  
