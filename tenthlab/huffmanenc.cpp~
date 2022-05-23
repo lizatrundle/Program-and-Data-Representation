@@ -1,0 +1,180 @@
+//Liza trundle emt8kdn
+//prelab 10
+//huffmanenc.cpp
+//used fileio.cpp file from the lab description page
+
+#include <iostream>
+#include <fstream>
+#include <cstdlib>
+#include <string>
+#include <iostream>
+#include <vector>
+#include <stdlib.h>
+#include <unordered_map>
+#include "heap.h"
+#include "heap_node.h"
+
+using namespace std;
+
+void prefixOutput(heap_node* root, string s);
+//void huffmanTree(binary_heap a_heap);
+
+unordered_map<char , string > prefix; 
+
+int main(int argc,char* argv[]){
+//correct parameter check
+   if (argc != 2) {
+        cout << "The input file name should be the only parameter" << endl;
+        exit(1);
+    }
+
+//correct file check
+ifstream file(argv[1]);
+    // if the file wasn't found, output an error message and exit
+    if (!file.is_open()) {
+        cout << "Unable to open '" << argv[1] << "' for reading" << endl;
+        exit(2);
+    }
+
+unordered_map<char, int> char_freq;
+   
+heap my_heap;
+
+char g;
+int symbols = 0;
+int unique = 0;
+ 
+while (file.get(g)) {
+  
+      if (g>= 0x20 && g <= 0x7e){
+
+	// character not in map
+       if (char_freq.find(g)!= char_freq.end()){
+	char_freq[g]= 1;
+	unique+=1;
+       }
+
+      //character in map 
+      else {
+	char_freq[g]++;
+      }}
+      symbols+=1;
+
+ }
+
+file.clear(); // Clears the _state_ of the file, not its contents!
+file.seekg(0);
+
+      
+ // Clears the _state_ of the file, not its contents!
+  
+
+ // putting elements of map into the heap 
+ for (unordered_map<char, int>::iterator it = char_freq.begin(); it!= char_freq.end(); it++)
+   
+   {
+     my_heap.insert(new heap_node(it->first, it->second));
+   }
+ 
+  
+//now you have the minheap, now you have to go through and make it into the huffman tree
+
+my_heap.huffmanTree();
+ 
+prefixOutput(my_heap.findMin(), "");
+
+//my_heap.print();
+
+
+file.clear(); // Clears the _state_ of the file, not its contents!
+  
+
+cout << "----------------------------------------"<< endl;
+
+ string output= ""; 
+
+ while (file.get(g)) {
+ 
+ 
+ output+=prefix[g] + " ";
+ }
+ cout << output <<endl;
+
+ file.close();
+      
+
+
+cout << "----------------------------------------"<< endl;
+
+
+int bits = symbols*8;
+//double compression_rat =
+  
+cout << "There are a total of"<< symbols << " symbols that are encoded."<< endl;
+cout << "There are " << unique << " distinct symbols used."<< endl;
+cout << "There were " << bits << "bits in the original file."<< endl;
+cout << "There were " << bits << "bits in the compressed file."<< endl;
+ 
+ 
+//cout <<"There are"<<endl;
+
+//The compression ratio is defined, in bits, as: (size of the original file)/(size of compressed file).
+//You should exclude the size of the prefix code tree in the compression ratio, and assume that the 0’s and 1’s you generated for the compressed file count as one bit each (rather than an 8-bit character). The Huffman tree cost is the same as described in lecture.
+
+  
+
+    //  num of characters *8 = number of bits , each character encoded 8 bits
+     
+ 
+ 
+    return 0;
+
+}
+
+void prefixOutput(heap_node* root, string s){
+
+  if (root==NULL){
+    return;
+  }
+
+   if (root->left==NULL && root->right == NULL){
+     if (root->character == ' '){
+       cout<< "space " << s <<"\n";
+     }
+     else{
+       cout<< root->character << " " << s << endl;
+     }   
+       prefix[root->character] = s;
+   }
+    
+ 
+   if (root->left!= NULL)
+     {
+       prefixOutput(root->left, s + "0");
+     }
+
+   if (root->right!= NULL){
+     
+  prefixOutput(root->right, s + "1");
+   }
+ 
+  
+}
+/*
+void huffmanTree(binary_heap a_heap){
+  while(a_heap.heap_size!=1){
+   
+    heap_node* left = a_heap.deleteMin();
+    heap_node* right = a_heap.deleteMin();
+
+    int sum = left->frequency + right->frequency;
+    heap_node*  huff_node = new heap_node('\n', sum);
+    huff_node->left = left;
+    huff_node ->right = right; 
+    //title it as a nonprintable char 
+   
+    a_heap.insert(huff_node);
+    
+  }}
+ 
+*/
